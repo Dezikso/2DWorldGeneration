@@ -16,6 +16,9 @@ MonoBehaviour:
   - name: Water
     height: 0.5
     tile: {fileID: 11400000, guid: ccef6b9e39355b841ad1e8a1091e4d32, type: 2}
-  - name: Grass
+  - name: Shore
+    height: 0.6
+    tile: {fileID: 11400000, guid: b597bc6bcdd744a4eac31c8e55f64a3b, type: 2}
+  - name: Land
     height: 1
     tile: {fileID: 11400000, guid: b597bc6bcdd744a4eac31c8e55f64a3b, type: 2}

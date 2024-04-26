@@ -55,6 +55,7 @@ public class MapGenerator : MonoBehaviour
         tilemap.ClearAllTiles();
     }
 
+
     private void OnValidate()
     {
         if (mapWidth <1)

@@ -15,7 +15,7 @@ MonoBehaviour:
   terrainTypes:
   - name: Water
     height: 0.5
-    tile: {fileID: 11400000, guid: cce8782abb2a94741a217b3eed91a46b, type: 2}
+    tile: {fileID: 11400000, guid: ccef6b9e39355b841ad1e8a1091e4d32, type: 2}
   - name: Grass
     height: 1
-    tile: {fileID: 11400000, guid: 0750b940a4ebad844b243faee97deafd, type: 2}
+    tile: {fileID: 11400000, guid: b597bc6bcdd744a4eac31c8e55f64a3b, type: 2}

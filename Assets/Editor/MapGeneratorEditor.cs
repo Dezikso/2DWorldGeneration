@@ -3,12 +3,10 @@ using UnityEngine;
 using UnityEditor;
 
 [CustomEditor(typeof(MapGenerator))]
-public class MapGenerationEditor : Editor
+public class MapGeneratorEditor : Editor
 {
     public override void OnInspectorGUI()
     {
-        base.OnInspectorGUI();
-
         MapGenerator mapGenerator = (MapGenerator)target;
 
         if (DrawDefaultInspector())

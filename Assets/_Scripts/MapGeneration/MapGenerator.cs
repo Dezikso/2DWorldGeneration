@@ -23,12 +23,28 @@ public class MapGenerator : MonoBehaviour
     [Header("References")]
     [SerializeField] private Tilemap tilemap;
 
+    private Dictionary<Vector2Int, TileData> tileDataGrid = new Dictionary<Vector2Int, TileData>();
+
     //Custom Editor Properties
     public bool autoUpdate;
 
 
+    private void Start()
+    {
+        GenerateMap();   
+    }
+
+
+    public void ClearTilemap() //Called by MapGenerationEditor.cs
+    {
+        tileDataGrid.Clear();
+        tilemap.ClearAllTiles();
+    }
+
     public void GenerateMap() //Called by MapGenerationEditor.cs
     {
+        ClearTilemap();
+
         float[,] noiseMap = NoiseGenerator.GenerateNoiseMap(mapWidth, mapHeight, noiseScale, offset, octaves, persistance, lacunarity, seed);
 
         for (int y = 0; y < mapHeight; y++)
@@ -41,8 +57,11 @@ public class MapGenerator : MonoBehaviour
                 {
                     if (currentHeight <= terrainType.height)
                     {
-                        Vector3Int tilePosition = new Vector3Int(x, y, 0);
-                        tilemap.SetTile(tilePosition, terrainType.tile);
+                        Vector2Int tilePosition2D = new Vector2Int(x, y);
+                        tileDataGrid[tilePosition2D] = new TileData(terrainType.id, false);
+
+                        Vector3Int tilePosition3D = new Vector3Int(x, y, 0);
+                        tilemap.SetTile(tilePosition3D, terrainType.tile);
                         break; 
                     }
                 }
@@ -50,9 +69,9 @@ public class MapGenerator : MonoBehaviour
         }
     }
 
-    public void ClearTilemap() //Called by MapGenerationEditor.cs
+    public bool GetTileData(Vector2Int position, out TileData tileData)
     {
-        tilemap.ClearAllTiles();
+        return tileDataGrid.TryGetValue(position, out tileData);
     }
 
 
@@ -65,5 +84,16 @@ public class MapGenerator : MonoBehaviour
             mapHeight = 1;
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (GetTileData(new Vector2Int(10, 10), out TileData tile))
+            {
+                Debug.Log(tile.isOccupied);
+                tile.isOccupied = true;
+            }
+        }
+    }
 }
 

@@ -84,16 +84,5 @@ public class MapGenerator : MonoBehaviour
             mapHeight = 1;
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if (GetTileData(new Vector2Int(10, 10), out TileData tile))
-            {
-                Debug.Log(tile.isOccupied);
-                tile.isOccupied = true;
-            }
-        }
-    }
 }
 

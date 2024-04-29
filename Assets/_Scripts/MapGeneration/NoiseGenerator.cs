@@ -57,21 +57,22 @@ public class NoiseGenerator
 
         return noiseMap;
     }
-    
+
 
     private static Vector2[] GenerateOctaveOffsets(int octaves, Vector2 offset, int seed)
     {
-        System.Random rnd = new System.Random(seed);
+        Random.InitState(seed);
         Vector2[] octaveOffsets = new Vector2[octaves];
         for (int i = 0; i < octaves; i++)
         {
-            float offsetX = rnd.Next(-100000, 100000) + offset.x;
-            float offsetY = rnd.Next(-100000, 100000) + offset.y;
+            float offsetX = Random.Range(-100000, 100000) + offset.x;
+            float offsetY = Random.Range(-100000, 100000) + offset.y;
             octaveOffsets[i] = new Vector2(offsetX, offsetY);
         }
 
         return octaveOffsets;
     }
+
 
     private static float[,] NormalizeNoiseMap(float[,] noiseMap, int mapHeight, int mapWidth, float minNoiseHeight, float maxNoiseHeight)
     {

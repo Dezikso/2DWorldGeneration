@@ -19,6 +19,7 @@ public class MapGenerator : MonoBehaviour
     [Header("Generation")]
     [SerializeField] private int seed;
     [SerializeField] private TerrainSetSO terrainSet;
+    [SerializeField] private EnvironmentObjectSetSO environmentObjectSet;
 
     [Header("References")]
     [SerializeField] private Tilemap tilemap;
@@ -31,7 +32,52 @@ public class MapGenerator : MonoBehaviour
 
     private void Start()
     {
+        ClearTilemap();
         GenerateMap();   
+    }
+
+    private void SpawnEnvironmentObjects()
+    {
+        Random.InitState(seed);
+
+        foreach (EnvironmentObjectType objectType in environmentObjectSet.environmentObjectTypes)
+        {
+            int density = objectType.density;
+            List<Vector2Int> availableTiles = GetAvailableTiles(objectType.terrainTypeID);
+
+            if (availableTiles.Count < density)
+            {
+                Debug.LogWarning($"The density of {objectType.name} is higher than avidable tiles!");
+                density = availableTiles.Count - 1;
+            }
+
+            for (int i = 0; i < density; i++)
+            {
+                int randomIndex = Random.Range(0, availableTiles.Count);
+                Vector2Int selectedTile = availableTiles[randomIndex];
+                availableTiles.RemoveAt(randomIndex);
+
+                tileDataGrid[selectedTile] = new TileData(objectType.id, true);
+
+                //DEBUG ONLY, DELETE LATER
+                Debug.Log(selectedTile.ToString());
+            }
+        }
+    }
+
+    private List<Vector2Int> GetAvailableTiles(int terrainTypeID)
+    {
+        List<Vector2Int> availableTiles = new List<Vector2Int>();
+
+        foreach (var tileData in tileDataGrid)
+        {
+            if (tileData.Value.terrainTypeID == terrainTypeID && !tileData.Value.isOccupied)
+            {
+                availableTiles.Add(tileData.Key);
+            }
+        }
+
+        return availableTiles;
     }
 
 
@@ -43,8 +89,6 @@ public class MapGenerator : MonoBehaviour
 
     public void GenerateMap() //Called by MapGenerationEditor.cs
     {
-        ClearTilemap();
-
         float[,] noiseMap = NoiseGenerator.GenerateNoiseMap(mapWidth, mapHeight, noiseScale, offset, octaves, persistance, lacunarity, seed);
 
         for (int y = 0; y < mapHeight; y++)
@@ -67,6 +111,8 @@ public class MapGenerator : MonoBehaviour
                 }
             }
         }
+
+        SpawnEnvironmentObjects();
     }
 
     public bool GetTileData(Vector2Int position, out TileData tileData)
@@ -83,6 +129,7 @@ public class MapGenerator : MonoBehaviour
         if (mapHeight < 1)
             mapHeight = 1;
     }
+
 
 }
 

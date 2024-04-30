@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class TileData
+public struct TileData
 {
     public int terrainTypeID;
     public bool isOccupied;

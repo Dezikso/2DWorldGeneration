@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9316b63698d6d334cb525f5938516009, type: 3}
+  m_Name: TestTerrainSet
+  m_EditorClassIdentifier: 
+  terrainTypes:
+  - id: 0
+    name: Water
+    height: 0.5
+    tile: {fileID: 11400000, guid: ccef6b9e39355b841ad1e8a1091e4d32, type: 2}
+  - id: 1
+    name: Shore
+    height: 0.6
+    tile: {fileID: 11400000, guid: b597bc6bcdd744a4eac31c8e55f64a3b, type: 2}
+  - id: 2
+    name: Land
+    height: 1
+    tile: {fileID: 11400000, guid: b597bc6bcdd744a4eac31c8e55f64a3b, type: 2}

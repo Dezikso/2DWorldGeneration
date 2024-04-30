@@ -6,5 +6,4 @@ using UnityEngine;
 public class TerrainSetSO : ScriptableObject
 {
     public List<TerrainType> terrainTypes;
-
 }

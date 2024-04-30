@@ -33,36 +33,8 @@ public class MapGenerator : MonoBehaviour
     private void Start()
     {
         ClearTilemap();
-        GenerateMap();   
-    }
-
-    private void SpawnEnvironmentObjects()
-    {
-        Random.InitState(seed);
-
-        foreach (EnvironmentObjectType objectType in environmentObjectSet.environmentObjectTypes)
-        {
-            int density = objectType.density;
-            List<Vector2Int> availableTiles = GetAvailableTiles(objectType.terrainTypeID);
-
-            if (availableTiles.Count < density)
-            {
-                Debug.LogWarning($"The density of {objectType.name} is higher than avidable tiles!");
-                density = availableTiles.Count - 1;
-            }
-
-            for (int i = 0; i < density; i++)
-            {
-                int randomIndex = Random.Range(0, availableTiles.Count);
-                Vector2Int selectedTile = availableTiles[randomIndex];
-                availableTiles.RemoveAt(randomIndex);
-
-                tileDataGrid[selectedTile] = new TileData(objectType.id, true);
-
-                //DEBUG ONLY, DELETE LATER
-                Debug.Log(selectedTile.ToString());
-            }
-        }
+        GenerateMap();
+        SpawnEnvironmentObjects();
     }
 
     private List<Vector2Int> GetAvailableTiles(int terrainTypeID)
@@ -111,13 +83,41 @@ public class MapGenerator : MonoBehaviour
                 }
             }
         }
-
-        SpawnEnvironmentObjects();
     }
 
-    public bool GetTileData(Vector2Int position, out TileData tileData)
+    public void SpawnEnvironmentObjects()
     {
-        return tileDataGrid.TryGetValue(position, out tileData);
+        if (tileDataGrid.Count <= 1)
+        {
+            Debug.LogWarning("Cannot spawn objects on an empty tilemap.");
+            return;
+        }
+
+        Random.InitState(seed);
+
+        foreach (EnvironmentObjectType objectType in environmentObjectSet.environmentObjectTypes)
+        {
+            int density = objectType.density;
+            List<Vector2Int> availableTiles = GetAvailableTiles(objectType.terrainTypeID);
+
+            if (availableTiles.Count < density)
+            {
+                Debug.LogWarning($"The density of {objectType.name} is higher than avidable tiles!");
+                density = availableTiles.Count - 1;
+            }
+
+            for (int i = 0; i < density; i++)
+            {
+                int randomIndex = Random.Range(0, availableTiles.Count);
+                Vector2Int selectedTile = availableTiles[randomIndex];
+                availableTiles.RemoveAt(randomIndex);
+
+                tileDataGrid[selectedTile] = new TileData(objectType.id, true);
+
+                //DEBUG ONLY, DELETE LATER
+                Debug.Log(selectedTile.ToString());
+            }
+        }
     }
 
 

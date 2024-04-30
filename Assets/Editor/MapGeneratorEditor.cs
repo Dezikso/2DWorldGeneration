@@ -20,7 +20,11 @@ public class MapGeneratorEditor : Editor
         if (GUILayout.Button("Generate Map"))
         {
             mapGenerator.GenerateMap();
-        }        
+        }
+        if (GUILayout.Button("Spawn Environment Objects"))
+        {
+            mapGenerator.SpawnEnvironmentObjects();
+        }
         if (GUILayout.Button("Clear Map"))
         {
             mapGenerator.ClearTilemap();

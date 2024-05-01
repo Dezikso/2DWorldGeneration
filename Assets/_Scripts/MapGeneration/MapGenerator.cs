@@ -33,23 +33,9 @@ public class MapGenerator : MonoBehaviour
     private void Start()
     {
         ClearTilemap();
+        ClearEnvironment();
         GenerateMap();
         SpawnEnvironmentObjects();
-    }
-
-    private List<Vector2Int> GetAvailableTiles(int terrainTypeID)
-    {
-        List<Vector2Int> availableTiles = new List<Vector2Int>();
-
-        foreach (var tileData in tileDataGrid)
-        {
-            if (tileData.Value.terrainTypeID == terrainTypeID && !tileData.Value.isOccupied)
-            {
-                availableTiles.Add(tileData.Key);
-            }
-        }
-
-        return availableTiles;
     }
 
 
@@ -57,6 +43,21 @@ public class MapGenerator : MonoBehaviour
     {
         tileDataGrid.Clear();
         tilemap.ClearAllTiles();
+    }
+
+    public void ClearEnvironment()
+    {
+        List<GameObject> children = new List<GameObject>();
+
+        foreach (Transform child in tilemap.transform)
+        {
+            children.Add(child.gameObject);
+        }
+
+        foreach (GameObject child in children)
+        {
+            DestroyImmediate(child);
+        }
     }
 
     public void GenerateMap() //Called by MapGenerationEditor.cs
@@ -105,36 +106,11 @@ public class MapGenerator : MonoBehaviour
 
             while (objectsSpawned < objectsToSpawn && maxSpawnAttempts > 0)
             {
-                int randomIndex = Random.Range(0, availableTiles.Count);
-                Vector2Int selectedTile = availableTiles[randomIndex];
-                bool canSpawnObject = true;
+                Vector2Int selectedTile = availableTiles[Random.Range(0, availableTiles.Count)];
 
-                for (int y = selectedTile.y; y < selectedTile.y + objectType.height; y++)
+                if (CanSpawnObjectAtTile(selectedTile, objectType.width, objectType.height))
                 {
-                    for (int x = selectedTile.x; x < selectedTile.x + objectType.width; x++)
-                    {
-                        if (!tileDataGrid.ContainsKey(new Vector2Int(x, y)) || tileDataGrid[new Vector2Int(x, y)].isOccupied)
-                        {
-                            canSpawnObject = false; 
-                            break;
-                        }
-                    }
-
-                    if (!canSpawnObject)
-                        break;
-                }
-
-                if (canSpawnObject)
-                {
-                    for (int y = selectedTile.y; y < selectedTile.y + objectType.height; y++)
-                    {
-                        for (int x = selectedTile.x; x < selectedTile.x + objectType.width; x++)
-                        {
-                            tileDataGrid[new Vector2Int(x, y)] = new TileData(objectType.id, true);
-                        }
-                    }
-
-                    Debug.Log(selectedTile);
+                    SpawnObjectAtTile(selectedTile, objectType);
                     objectsSpawned++;
                 }
                 else
@@ -147,6 +123,53 @@ public class MapGenerator : MonoBehaviour
         }
     }
 
+    private bool CanSpawnObjectAtTile(Vector2Int selectedTile, int width, int height)
+    {
+        for (int y = selectedTile.y; y < selectedTile.y + height; y++)
+        {
+            for (int x = selectedTile.x; x < selectedTile.x + width; x++)
+            {
+                if (!tileDataGrid.ContainsKey(new Vector2Int(x, y)) || tileDataGrid[new Vector2Int(x, y)].isOccupied)
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private void SpawnObjectAtTile(Vector2Int tilePosition, EnvironmentObjectType objectType)
+    {
+        if (objectType.objectPrefab != null)
+        {
+            GameObject spawnedObject = Instantiate(objectType.objectPrefab, new Vector3(tilePosition.x, tilePosition.y, 0), Quaternion.identity);
+            spawnedObject.transform.SetParent(tilemap.transform);
+
+            for (int y = tilePosition.y; y <= tilePosition.y + objectType.height-1; y++)
+            {
+                for (int x = tilePosition.x; x <= tilePosition.x + objectType.width-1; x++)
+                {
+                    tileDataGrid[new Vector2Int(x, y)] = new TileData(objectType.id, true);
+                }
+            }
+        }
+    }
+
+    private List<Vector2Int> GetAvailableTiles(int terrainTypeID)
+    {
+        List<Vector2Int> availableTiles = new List<Vector2Int>();
+
+        foreach (var tileData in tileDataGrid)
+        {
+            if (tileData.Value.terrainTypeID == terrainTypeID && !tileData.Value.isOccupied)
+            {
+                availableTiles.Add(tileData.Key);
+            }
+        }
+
+        return availableTiles;
+    }
+
 
     private void OnValidate()
     {
@@ -156,7 +179,5 @@ public class MapGenerator : MonoBehaviour
         if (mapHeight < 1)
             mapHeight = 1;
     }
-
-
 }
 

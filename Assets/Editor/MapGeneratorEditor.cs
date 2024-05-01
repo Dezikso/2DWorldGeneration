@@ -28,6 +28,9 @@ public class MapGeneratorEditor : Editor
         if (GUILayout.Button("Clear Map"))
         {
             mapGenerator.ClearTilemap();
+        }        if (GUILayout.Button("Clear Environment"))
+        {
+            mapGenerator.ClearEnvironment();
         }
     }
 }

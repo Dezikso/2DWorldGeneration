@@ -16,7 +16,7 @@ MonoBehaviour:
   - id: 0
     name: Tree
     terrainTypeID: 2
-    density: 5
-    width: 0
-    height: 0
-    objectPrefab: {fileID: 0}
+    spawnAmount: 100
+    width: 2
+    height: 4
+    objectPrefab: {fileID: 9143328624963808211, guid: c7a9d27a4ab64bf4493d1b216675a1b6, type: 3}

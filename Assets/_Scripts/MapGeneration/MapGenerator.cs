@@ -85,7 +85,7 @@ public class MapGenerator : MonoBehaviour
         }
     }
 
-    public void SpawnEnvironmentObjects()
+    public void SpawnEnvironmentObjects() //Called by MapGenerationEditor.cs
     {
         if (tileDataGrid.Count <= 1)
         {
@@ -97,25 +97,52 @@ public class MapGenerator : MonoBehaviour
 
         foreach (EnvironmentObjectType objectType in environmentObjectSet.environmentObjectTypes)
         {
-            int density = objectType.density;
+            int objectsToSpawn = objectType.spawnAmount;
+            int objectsSpawned = 0;
+            int maxSpawnAttempts = objectsToSpawn * 10;
+
             List<Vector2Int> availableTiles = GetAvailableTiles(objectType.terrainTypeID);
 
-            if (availableTiles.Count < density)
-            {
-                Debug.LogWarning($"The density of {objectType.name} is higher than avidable tiles!");
-                density = availableTiles.Count - 1;
-            }
-
-            for (int i = 0; i < density; i++)
+            while (objectsSpawned < objectsToSpawn && maxSpawnAttempts > 0)
             {
                 int randomIndex = Random.Range(0, availableTiles.Count);
                 Vector2Int selectedTile = availableTiles[randomIndex];
-                availableTiles.RemoveAt(randomIndex);
+                bool canSpawnObject = true;
 
-                tileDataGrid[selectedTile] = new TileData(objectType.id, true);
+                for (int y = selectedTile.y; y < selectedTile.y + objectType.height; y++)
+                {
+                    for (int x = selectedTile.x; x < selectedTile.x + objectType.width; x++)
+                    {
+                        if (!tileDataGrid.ContainsKey(new Vector2Int(x, y)) || tileDataGrid[new Vector2Int(x, y)].isOccupied)
+                        {
+                            canSpawnObject = false; 
+                            break;
+                        }
+                    }
 
-                //DEBUG ONLY, DELETE LATER
-                Debug.Log(selectedTile.ToString());
+                    if (!canSpawnObject)
+                        break;
+                }
+
+                if (canSpawnObject)
+                {
+                    for (int y = selectedTile.y; y < selectedTile.y + objectType.height; y++)
+                    {
+                        for (int x = selectedTile.x; x < selectedTile.x + objectType.width; x++)
+                        {
+                            tileDataGrid[new Vector2Int(x, y)] = new TileData(objectType.id, true);
+                        }
+                    }
+
+                    Debug.Log(selectedTile);
+                    objectsSpawned++;
+                }
+                else
+                {
+                    Debug.LogWarning($"Object {objectType.name} cannot be spawned at {selectedTile} because some tiles are occupied.");
+                }
+
+                maxSpawnAttempts--;
             }
         }
     }

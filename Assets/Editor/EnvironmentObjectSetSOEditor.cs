@@ -26,7 +26,7 @@ public class EnvironmentObjectSetSOEditor : Editor
         for (int i = 0; i < envObjectSet.environmentObjectTypes.Count; i++)
         {
             EnvironmentObjectType envObjectType = envObjectSet.environmentObjectTypes[i];
-            modifiedEnvObjectTypes.Add(new EnvironmentObjectType(i, envObjectType.name, envObjectType.terrainTypeID, envObjectType.density, envObjectType.width, envObjectType.height, envObjectType.objectPrefab));
+            modifiedEnvObjectTypes.Add(new EnvironmentObjectType(i, envObjectType.name, envObjectType.terrainTypeID, envObjectType.spawnAmount, envObjectType.width, envObjectType.height, envObjectType.objectPrefab));
         }
 
         envObjectSet.environmentObjectTypes = modifiedEnvObjectTypes;

@@ -30,14 +30,13 @@ public class MapGenerator : MonoBehaviour
     public bool autoUpdate;
 
 
-    private void Start()
+    public void GenerateMap()
     {
         ClearTilemap();
         ClearEnvironment();
-        GenerateMap();
+        GenerateTilemap();
         SpawnEnvironmentObjects();
     }
-
 
     public void ClearTilemap() //Called by MapGenerationEditor.cs
     {
@@ -47,6 +46,7 @@ public class MapGenerator : MonoBehaviour
 
     public void ClearEnvironment()
     {
+        tileDataGrid.Clear();
         List<GameObject> children = new List<GameObject>();
 
         foreach (Transform child in tilemap.transform)
@@ -60,7 +60,7 @@ public class MapGenerator : MonoBehaviour
         }
     }
 
-    public void GenerateMap() //Called by MapGenerationEditor.cs
+    public void GenerateTilemap() //Called by MapGenerationEditor.cs
     {
         float[,] noiseMap = NoiseGenerator.GenerateNoiseMap(mapWidth, mapHeight, noiseScale, offset, octaves, persistance, lacunarity, seed);
 

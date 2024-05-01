@@ -13,13 +13,14 @@ public class MapGeneratorEditor : Editor
         {
             if (mapGenerator.autoUpdate)
             {
-                mapGenerator.GenerateMap();
+                mapGenerator.ClearEnvironment();
+                mapGenerator.GenerateTilemap();
             }
         }
 
-        if (GUILayout.Button("Generate Map"))
+        if (GUILayout.Button("Generate Tilemap"))
         {
-            mapGenerator.GenerateMap();
+            mapGenerator.GenerateTilemap();
         }
         if (GUILayout.Button("Spawn Environment Objects"))
         {

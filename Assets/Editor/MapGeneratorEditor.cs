@@ -13,8 +13,9 @@ public class MapGeneratorEditor : Editor
         {
             if (mapGenerator.autoUpdate)
             {
-                mapGenerator.ClearEnvironment();
-                mapGenerator.GenerateTilemap();
+                //mapGenerator.ClearEnvironment();
+                //mapGenerator.GenerateTilemap();
+                mapGenerator.GenerateMap();
             }
         }
 

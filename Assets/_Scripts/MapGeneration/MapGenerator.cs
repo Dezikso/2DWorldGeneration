@@ -30,6 +30,11 @@ public class MapGenerator : MonoBehaviour
     public bool autoUpdate;
 
 
+    public void RandomizeSeed()
+    {
+        seed = Random.Range(int.MinValue, int.MaxValue);
+    }
+
     public void GenerateMap()
     {
         ClearTilemap();
@@ -115,7 +120,7 @@ public class MapGenerator : MonoBehaviour
                 }
                 else
                 {
-                    Debug.LogWarning($"Object {objectType.name} cannot be spawned at {selectedTile} because some tiles are occupied.");
+                    //Debug.LogWarning($"Object {objectType.name} cannot be spawned at {selectedTile} because some tiles are occupied.");
                 }
 
                 maxSpawnAttempts--;

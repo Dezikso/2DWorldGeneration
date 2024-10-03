@@ -6,8 +6,8 @@ using Data.ScriptableObjects;
 [CustomEditor(typeof(TerrainSetSO))]
 public class TerrainSetSOEditor : Editor
 {
-    SerializedObject _serializedTerrainSet;
-    bool _showTerrainTypesArray = true;
+    private SerializedObject _serializedTerrainSet;
+    private bool _showTerrainTypesArray = true;
 
     void OnEnable()
     {
@@ -27,19 +27,13 @@ public class TerrainSetSOEditor : Editor
             var terrainTypesArray = _serializedTerrainSet.FindProperty("terrainTypes");
             EditorGUILayout.PropertyField(terrainTypesArray.FindPropertyRelative("Array.size"), new GUIContent("Size"));
 
-            GUIStyle boxStyle = new GUIStyle(GUI.skin.box)
-            {
-                normal = { background = CreateTexture(2, 2, new Color(0.35f, 0.35f, 0.35f, 0.35f)) },
-                padding = new RectOffset(5, 5, 5, 5)
-            };
-
-            EditorGUILayout.BeginVertical(boxStyle);
+            EditorGUILayout.BeginVertical(CreateGUIStyle(new Color(0.35f, 0.35f, 0.35f, 0.35f), 5));
 
             for (int i = 0; i < terrainTypesArray.arraySize; i++)
             {
                 var element = terrainTypesArray.GetArrayElementAtIndex(i);
-                EditorGUILayout.BeginHorizontal();
-                EditorGUILayout.LabelField($"Terrain Type {i}:", GUILayout.Width(100));
+                EditorGUILayout.BeginHorizontal(CreateGUIStyle(new Color(0.1f, 0.1f, 0.1f, 0.1f), 1));
+                EditorGUILayout.LabelField($"{element.FindPropertyRelative("name").stringValue}", GUILayout.Width(65));
 
                 element.isExpanded = EditorGUILayout.Foldout(element.isExpanded, element.isExpanded ? "Collapse" : "Expand");
 
@@ -51,10 +45,12 @@ public class TerrainSetSOEditor : Editor
                 if (element.isExpanded)
                 {
                     EditorGUI.indentLevel++;
+                    EditorGUILayout.LabelField($"ID: {i}", EditorStyles.boldLabel, GUILayout.Width(100));
                     EditorGUILayout.PropertyField(element.FindPropertyRelative("name"), new GUIContent("Name"));
                     EditorGUILayout.PropertyField(element.FindPropertyRelative("height"), new GUIContent("Height"));
                     EditorGUILayout.PropertyField(element.FindPropertyRelative("tile"), new GUIContent("Tile"));
                     EditorGUI.indentLevel--;
+                    EditorGUILayout.Space(12.5f);
                 }
             }
 
@@ -66,6 +62,17 @@ public class TerrainSetSOEditor : Editor
 
         _serializedTerrainSet.ApplyModifiedProperties();
         if (GUI.changed) EditorUtility.SetDirty(terrainSet);
+    }
+
+    private GUIStyle CreateGUIStyle(Color color, int padding)
+    {
+        GUIStyle style = new GUIStyle(GUI.skin.box)
+        {
+            normal = { background = CreateTexture(2, 2, color) },
+            padding = new RectOffset(padding, padding, padding, padding)
+        };
+
+        return style;
     }
 
     private Texture2D CreateTexture(int width, int height, Color col)

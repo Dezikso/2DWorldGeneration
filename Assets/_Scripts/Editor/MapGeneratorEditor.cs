@@ -29,7 +29,7 @@ public class MapGeneratorEditor : Editor
     {
         if (DrawDefaultInspector())
         {
-            if (_mapGenerator.autoUpdate && generateMapMethod != null)
+            if (_mapGenerator.AutoUpdate && generateMapMethod != null)
                 generateMapMethod.Invoke(_mapGenerator, null);
         }
 

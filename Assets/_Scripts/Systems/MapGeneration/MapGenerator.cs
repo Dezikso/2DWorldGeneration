@@ -32,17 +32,21 @@ public class MapGenerator : MonoBehaviour
     private Dictionary<Vector2Int, TileData> _tileDataGrid = new Dictionary<Vector2Int, TileData>();
 
 
-    public void RandomizeSeed()
-    {
-        _seed = UnityEngine.Random.Range(int.MinValue, int.MaxValue);
-    }
-
+    // Called by GenerateMapEvent
     public void GenerateMap()
     {
+        if (Application.isPlaying)
+            RandomizeSeed();
+
         ClearTilemap();
         ClearEnvironment();
         GenerateTilemap();
         SpawnEnvironmentObjects();
+    }
+
+    private void RandomizeSeed()
+    {
+        _seed = UnityEngine.Random.Range(int.MinValue, int.MaxValue);
     }
 
     private void ClearTilemap()

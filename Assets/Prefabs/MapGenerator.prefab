@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1845708364204735651}
   - component: {fileID: 6157474900426796088}
+  - component: {fileID: 3070009795300484829}
   m_Layer: 0
   m_Name: MapGenerator
   m_TagString: Untagged
@@ -57,6 +58,34 @@ MonoBehaviour:
   _environmentObjectSet: {fileID: 11400000, guid: b48dceced2926f34f808addd35153357, type: 2}
   _tilemap: {fileID: 2894954587126086358}
   _autoUpdate: 0
+--- !u!114 &3070009795300484829
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1190452123884997999}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bb4d1f92a6ee524fb5941488f0589ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventChannel: {fileID: 11400000, guid: d8903b8342675ca4f87914853277fb63, type: 2}
+  unityEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6157474900426796088}
+        m_TargetAssemblyTypeName: MapGenerator, Assembly-CSharp
+        m_MethodName: GenerateMap
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &3031908252182247288
 GameObject:
   m_ObjectHideFlags: 0

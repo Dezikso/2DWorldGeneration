@@ -42,13 +42,13 @@ public class MapGenerator : MonoBehaviour
         SpawnEnvironmentObjects();
     }
 
-    public void ClearTilemap() // Called by MapGenerationEditor.cs
+    private void ClearTilemap()
     {
         tileDataGrid.Clear();
         tilemap.ClearAllTiles();
     }
 
-    public void ClearEnvironment()
+    private void ClearEnvironment()
     {
         tileDataGrid.Clear();
         List<GameObject> children = new List<GameObject>();
@@ -64,7 +64,7 @@ public class MapGenerator : MonoBehaviour
         }
     }
 
-    public void GenerateTilemap() // Called by MapGenerationEditor.cs
+    private void GenerateTilemap()
     {
         float[,] noiseMap = NoiseGenerator.GenerateNoiseMap(mapWidth, mapHeight, noiseScale, offset, octaves, persistance, lacunarity, seed);
 
@@ -90,7 +90,7 @@ public class MapGenerator : MonoBehaviour
         }
     }
 
-    public void SpawnEnvironmentObjects() // Called by MapGenerationEditor.cs
+    private void SpawnEnvironmentObjects()
     {
         if (tileDataGrid.Count <= 1)
         {

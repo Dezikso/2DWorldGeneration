@@ -13,29 +13,25 @@ MonoBehaviour:
   m_Name: EnvironmentSet_1
   m_EditorClassIdentifier: 
   environmentObjectTypes:
-  - id: 0
-    name: Chest
+  - name: Chest
     terrainTypeID: 2
     spawnAmount: 5
     width: 3
     height: 3
     objectPrefab: {fileID: 9143328624963808211, guid: df7ab4156f502514d918925d729463a8, type: 3}
-  - id: 1
-    name: Tree
+  - name: Tree
     terrainTypeID: 2
     spawnAmount: 75
     width: 3
     height: 4
     objectPrefab: {fileID: 9143328624963808211, guid: c7a9d27a4ab64bf4493d1b216675a1b6, type: 3}
-  - id: 2
-    name: Rock
+  - name: Rock
     terrainTypeID: 2
     spawnAmount: 30
     width: 1
     height: 1
     objectPrefab: {fileID: 9143328624963808211, guid: e65bda49e9c5020439f431e71d2713d0, type: 3}
-  - id: 3
-    name: Bush
+  - name: Bush
     terrainTypeID: 2
     spawnAmount: 50
     width: 1

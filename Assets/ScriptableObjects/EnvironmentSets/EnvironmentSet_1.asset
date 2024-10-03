@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e5d88b64ef1af25439ad6bda021ed8b8, type: 3}
-  m_Name: TestEnvSet
+  m_Name: EnvironmentSet_1
   m_EditorClassIdentifier: 
   environmentObjectTypes:
   - id: 0

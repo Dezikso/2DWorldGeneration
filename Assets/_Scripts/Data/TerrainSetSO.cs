@@ -1,10 +1,15 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+[CreateAssetMenu(fileName = "NewTerrainSet", menuName = "MapGeneration/TerrainSet")]
+public class TerrainSetSO : ScriptableObject
+{
+    public List<TerrainType> terrainTypes;
+}
+
 [System.Serializable]
-public struct TerrainType
+public class TerrainType
 {
     public int id;
     public string name;

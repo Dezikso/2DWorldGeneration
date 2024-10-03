@@ -1,35 +1,84 @@
-using System.Collections.Generic;
+#if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 [CustomEditor(typeof(TerrainSetSO))]
 public class TerrainSetSOEditor : Editor
 {
+    SerializedObject _serializedTerrainSet;
+    bool _showTerrainTypesArray = true;
+
+    void OnEnable()
+    {
+        _serializedTerrainSet = new SerializedObject(target);
+    }
+
     public override void OnInspectorGUI()
     {
-        base.OnInspectorGUI();
+        _serializedTerrainSet.Update();
 
-        TerrainSetSO terrainSet = (TerrainSetSO)target;
+        var terrainSet = (TerrainSetSO)target;
 
-        
-        if (GUILayout.Button("Assign IDs Automatically"))
+        _showTerrainTypesArray = EditorGUILayout.Foldout(_showTerrainTypesArray, "Terrain Types");
+
+        if (_showTerrainTypesArray)
         {
-            AssignTerrainTypeIDs(terrainSet);
+            var terrainTypesArray = _serializedTerrainSet.FindProperty("terrainTypes");
+            EditorGUILayout.PropertyField(terrainTypesArray.FindPropertyRelative("Array.size"), new GUIContent("Size"));
+
+            GUIStyle boxStyle = new GUIStyle(GUI.skin.box)
+            {
+                normal = { background = CreateTexture(2, 2, new Color(0.35f, 0.35f, 0.35f, 0.35f)) },
+                padding = new RectOffset(5, 5, 5, 5)
+            };
+
+            EditorGUILayout.BeginVertical(boxStyle);
+
+            for (int i = 0; i < terrainTypesArray.arraySize; i++)
+            {
+                var element = terrainTypesArray.GetArrayElementAtIndex(i);
+                EditorGUILayout.BeginHorizontal();
+                EditorGUILayout.LabelField($"Terrain Type {i}:", GUILayout.Width(100));
+
+                element.isExpanded = EditorGUILayout.Foldout(element.isExpanded, element.isExpanded ? "Collapse" : "Expand");
+
+                if (GUILayout.Button("Remove", GUILayout.Width(70)))
+                    terrainTypesArray.DeleteArrayElementAtIndex(i);
+
+                EditorGUILayout.EndHorizontal();
+
+                if (element.isExpanded)
+                {
+                    EditorGUI.indentLevel++;
+                    EditorGUILayout.PropertyField(element.FindPropertyRelative("name"), new GUIContent("Name"));
+                    EditorGUILayout.PropertyField(element.FindPropertyRelative("height"), new GUIContent("Height"));
+                    EditorGUILayout.PropertyField(element.FindPropertyRelative("tile"), new GUIContent("Tile"));
+                    EditorGUI.indentLevel--;
+                }
+            }
+
+            if (GUILayout.Button("Add New Terrain Type"))
+                terrainTypesArray.arraySize++;
+
+            EditorGUILayout.EndVertical();
         }
+
+        _serializedTerrainSet.ApplyModifiedProperties();
+        if (GUI.changed) EditorUtility.SetDirty(terrainSet);
     }
 
-    private void AssignTerrainTypeIDs(TerrainSetSO terrainSet)
+    private Texture2D CreateTexture(int width, int height, Color col)
     {
-        List<TerrainType> modifiedTerrainTypes = new List<TerrainType>();
+        Color[] pix = new Color[width * height];
+        for (int i = 0; i < pix.Length; i++)
+            pix[i] = col;
 
-        for (int i = 0; i < terrainSet.terrainTypes.Count; i++)
-        {
-            TerrainType terrainType = terrainSet.terrainTypes[i];
-            modifiedTerrainTypes.Add(new TerrainType(i, terrainType.name, terrainType.height, terrainType.tile));
-        }
+        Texture2D result = new Texture2D(width, height);
+        result.SetPixels(pix);
+        result.Apply();
 
-        terrainSet.terrainTypes = modifiedTerrainTypes;
-        EditorUtility.SetDirty(terrainSet);
+        return result;
     }
-
 }
+#endif

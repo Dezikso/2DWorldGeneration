@@ -2,25 +2,28 @@ using UnityEngine;
 using UnityEngine.UI;
 using Core.EventChannels;
 
-public class UIManager : MonoBehaviour
+namespace UI
 {
-    [Header("Event Channels")]
-    [SerializeField] private EventChannel _generateMapEventChannel;
-
-    [Header("UI Elements")]
-    [SerializeField] private Button _generateButton;
-
-
-    private void Start()
+    public class UIManager : MonoBehaviour
     {
-        if (_generateButton == null)
-            return;
+        [Header("Event Channels")]
+        [SerializeField] private EventChannel _generateMapEventChannel;
 
-        _generateButton.onClick.AddListener(OnGenerateButtonClicked);
-    }
+        [Header("UI Elements")]
+        [SerializeField] private Button _generateButton;
 
-    private void OnGenerateButtonClicked()
-    {
-        _generateMapEventChannel.Raise(null);
+
+        private void Start()
+        {
+            if (_generateButton == null)
+                return;
+
+            _generateButton.onClick.AddListener(OnGenerateButtonClicked);
+        }
+
+        private void OnGenerateButtonClicked()
+        {
+            _generateMapEventChannel.Raise(null);
+        }
     }
 }

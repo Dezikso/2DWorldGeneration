@@ -1,6 +1,7 @@
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
+using Data.ScriptableObjects;
 
 [CustomEditor(typeof(EnvironmentObjectSetSO))]
 public class EnvironmentObjectSetSOEditor : Editor

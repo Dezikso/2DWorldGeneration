@@ -1,12 +1,15 @@
-[System.Serializable]
-public class TileData
+namespace Data
 {
-    public int terrainTypeID;
-    public bool isOccupied;
-
-    public TileData(int terrainTypeID, bool isOccupied)
+    [System.Serializable]
+    public class TileData
     {
-        this.terrainTypeID = terrainTypeID;
-        this.isOccupied = isOccupied;
+        public int terrainTypeID;
+        public bool isOccupied;
+
+        public TileData(int terrainTypeID, bool isOccupied)
+        {
+            this.terrainTypeID = terrainTypeID;
+            this.isOccupied = isOccupied;
+        }
     }
 }

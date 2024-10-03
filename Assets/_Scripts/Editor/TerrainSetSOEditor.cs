@@ -1,7 +1,7 @@
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.Tilemaps;
+using Data.ScriptableObjects;
 
 [CustomEditor(typeof(TerrainSetSO))]
 public class TerrainSetSOEditor : Editor
